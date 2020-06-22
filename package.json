@@ -1,0 +1,26 @@
+{
+  "name": "mern-project",
+  "version": "1.0.0",
+  "description": "mern project",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "server": "nodemon app.js"
+  },
+  "keywords": [
+    "mern",
+    "react",
+    "mongo"
+  ],
+  "author": "Volodymyr Maslo <vladimirmaslo90@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "config": "^3.3.1",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.19"
+  },
+  "devDependencies": {
+    "concurrently": "^5.2.0",
+    "nodemon": "^2.0.4"
+  }
+}
