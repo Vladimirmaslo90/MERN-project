@@ -1,4 +1,4 @@
 {
   "port": 5000,
-  "mongoConnectionString": ""
+  "mongoConnectionString": "mongodb+srv://vmas:maslo8066@cluster0-yxxbq.azure.mongodb.net/app?retryWrites=true&w=majority"
 }
