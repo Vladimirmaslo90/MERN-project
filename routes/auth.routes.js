@@ -65,6 +65,18 @@ router.post(
           message: "Incorrect data during login"
         });
       }
+      const { email, password } = req.body;
+      const user = await User.findOne({ email });
+      if (!user) {
+        return res
+          .status(400)
+          .json({ message: "User with such email is not exists" });
+      }
+
+      const isMatch = bycript.compare(password, user.password);
+      if (!isMatch) {
+        return res.status(400).json({ message: "passowrd is incorrect" });
+      }
     } catch (e) {
       res.status(500).json({
         message: "Someting went wrong. Please try again"
