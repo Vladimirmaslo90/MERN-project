@@ -1,14 +1,9 @@
-const {
-  Router
-} = require("express");
+const { Router } = require("express");
 const User = require("../models/User");
-const jvt = require('jsonwebtoken')
-const config = require('config')
+const jvt = require("jsonwebtoken");
+const config = require("config");
 const bycript = require("bcryptjs");
-const {
-  check,
-  validationResult
-} = require("express-validator");
+const { check, validationResult } = require("express-validator");
 const router = Router();
 
 //api/auth/register
@@ -30,20 +25,15 @@ router.post(
         });
       }
 
-      const {
-        email,
-        password
-      } = req.body;
+      const { email, password } = req.body;
 
       const candidate = await User.findOne({
         email
       });
       if (candidate) {
-        res
-          .status(400)
-          .json({
-            message: "This email address is already exists"
-          });
+        res.status(400).json({
+          message: "This email address is already exists"
+        });
       }
 
       const hashedPassword = await bycript.hash(password, 12);
@@ -69,8 +59,8 @@ router.post(
   "/login",
   [
     check("email", "Please enter valid email")
-    .normalizeEmail()
-    .isEmail(),
+      .normalizeEmail()
+      .isEmail(),
     check("password", "please enter valid password").exists()
   ],
   async (req, res) => {
@@ -82,34 +72,35 @@ router.post(
           message: "Incorrect data during login"
         });
       }
-      const {
-        email,
-        password
-      } = req.body;
+      const { email, password } = req.body;
       const user = await User.findOne({
         email
       });
       if (!user) {
-        return res
-          .status(400)
-          .json({
-            message: "User with such email is not exists"
-          });
+        return res.status(400).json({
+          message: "User with such email is not exists"
+        });
       }
 
       const isMatch = bycript.compare(password, user.password);
       if (!isMatch) {
         return res.status(400).json({
-          message: "passowrd is incorrect"
+          message: "password is incorrect"
         });
       }
-      const token = jvt.sign({
-          userId = user.id
+      const token = jvt.sign(
+        {
+          userId: user.id
         },
-        config.get('jvtSecret'), {
-          expiresIn: '1h'
+        config.get("jvtSecret"),
+        {
+          expiresIn: "1h"
         }
-      )
+      );
+      res.json({
+        token,
+        userId: user.id
+      });
     } catch (e) {
       res.status(500).json({
         message: "Someting went wrong. Please try again"
